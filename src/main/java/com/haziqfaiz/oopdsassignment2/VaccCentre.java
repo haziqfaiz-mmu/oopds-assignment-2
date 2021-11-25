@@ -3,6 +3,7 @@ package com.haziqfaiz.oopdsassignment2;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -20,6 +21,7 @@ public class VaccCentre extends User {
     private int    currentVaccineStock;
     private int    totalFirstDoseDone;
     private int    totalSecondDoseDone;
+    private HashMap <String, Integer> FirstDoseDone;
 
     private static LocalDate dateapp = LocalDate.now();
     private static ArrayList<Recipient> recipients;
@@ -67,8 +69,16 @@ public class VaccCentre extends User {
      * Returns the current vaccination centre's details (for saving into VaccCentreStatistics.csv), separated by commas.
      * @return vacc. centre's ID, current time, total first doses done, and total second doses done; separated by commas.
      */
-    public String toCSVStringStatistics() {
-        return vaccCentreId + "," + dateapp + "," + totalFirstDoseDone + "," + totalSecondDoseDone;
+    public String toCSVStringStatisticsFirstDose() {
+        return vaccCentreId  + ","  +  "Total First Dose done" +  "," + dateapp + "," + totalFirstDoseDone;
+    }
+
+    /**
+     * Returns the current vaccination centre's details (for saving into VaccCentreStatistics.csv), separated by commas.
+     * @return vacc. centre's ID, current time, total first doses done, and total second doses done; separated by commas.
+     */
+    public String toCSVStringStatisticsSecondDose() {
+        return vaccCentreId + "," + "Total Second Dose done" + ","  + dateapp + "," + totalSecondDoseDone;
     }
 
     /**
@@ -236,6 +246,7 @@ public class VaccCentre extends User {
         for (int i = 0 ; i < recipients.size(); i++) {
             if (recipients.get(i).getID().equals(id) && recipients.get(i).getStatus().equals("1ST DOSE SET")) {
                 recipients.get(i).setStatus("1ST DOSE DONE");
+                recipients.get(i).recordFirstDoseDate(recipients.get(i).getAppointmentDate());
 
                 for (int j = 0 ; j < vaccCentres.size(); j++) {
                     if (vaccCentres.get(j).getCurrentVaccineStock() == 0)
@@ -251,10 +262,11 @@ public class VaccCentre extends User {
                     }
                 }
 
-                saveVaccCentreToCSVStatistics (vaccCentres);
+                saveVaccCentreToCSVStatisticsFirstDose(vaccCentres);
             }
             else if (recipients.get(i).getID().equals(id) && recipients.get(i).getStatus().equals("2ND DOSE SET")) {
                 recipients.get(i).setStatus("2ND DOSE DONE");
+                recipients.get(i).recordSecondDoseDate(recipients.get(i).getAppointmentDate());
 
                 for (int j = 0 ; j < vaccCentres.size(); j++) {
                     if (vaccCentres.get(j).getVaccCentreId().equals(recipients.get(i).getVaccCentrePlacement())) {
@@ -268,7 +280,7 @@ public class VaccCentre extends User {
                     }
                 }
 
-                saveVaccCentreToCSVStatistics (vaccCentres);
+                saveVaccCentreToCSVStatisticsSecondDose(vaccCentres);
             }
 
         }
@@ -282,8 +294,8 @@ public class VaccCentre extends User {
     /**
      * View current vaccination centre's statistics.
      */
-    protected static void viewStatistics (int vaccCentreNumber) throws IOException {
-        List<String> lines = Files.readAllLines(Paths.get("VaccCentreStatistics.csv"));
+    protected static void viewStatisticsFirst (int vaccCentreNumber) throws IOException {
+        List<String> lines = Files.readAllLines(Paths.get("VaccCentreStatisticsFirstDose.csv"));
         ArrayList<VaccCentre> vaccCentres = vaccCentreDataLoader();
 
         for (int x = 0; x < vaccCentres.size(); x++) {
@@ -295,4 +307,20 @@ public class VaccCentre extends User {
             }
         }
     }
+
+    protected static void viewStatisticsSecond (int vaccCentreNumber) throws IOException {
+        List<String> lines = Files.readAllLines(Paths.get("VaccCentreStatisticsSecondDose.csv"));
+        ArrayList<VaccCentre> vaccCentres = vaccCentreDataLoader();
+
+        for (int x = 0; x < vaccCentres.size(); x++) {
+            for (int i = 0; i < lines.size(); i++) {
+                String[] items = lines.get(i).split(",");
+                for (int j = 0; j < items.length; j++)
+                    if (vaccCentres.get(x).getVaccCentreId().equals(items[0]) && vaccCentres.get(vaccCentreNumber-1).vaccCentreId.equals(items[0]) )
+                        System.out.println (items[j]);
+            }
+        }
+    }
+
+
 }

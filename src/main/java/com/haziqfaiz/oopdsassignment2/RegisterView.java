@@ -8,6 +8,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
+import java.io.IOException;
+
 public class RegisterView {
 
     public RegisterController controller = new RegisterController();
@@ -42,16 +44,16 @@ public class RegisterView {
         phoneLabel.setLayoutX(150);
         phoneLabel.setLayoutY(400);
 
-        Label dobLabel = new Label("Date of Birth ");
-        dobLabel.setFont(new Font("Verdana",20));
-        dobLabel.setLayoutX(150);
-        dobLabel.setLayoutY(450);
+        Label ageLabel = new Label("Age: ");
+        ageLabel.setFont(new Font("Verdana",20));
+        ageLabel.setLayoutX(150);
+        ageLabel.setLayoutY(450);
 
-        DatePicker datePicker = new DatePicker();
+        /*DatePicker datePicker = new DatePicker();
         datePicker.setPromptText("Please choose Date of Birth");
         datePicker.setLayoutX(300);
         datePicker.setLayoutY(450);
-        datePicker.setPrefWidth(400);
+        datePicker.setPrefWidth(400);*/
 
         TextField idField = new TextField();
         idField.setPromptText("Please enter your IC/Passport Number");
@@ -77,12 +79,31 @@ public class RegisterView {
         phoneField.setLayoutY(400);
         phoneField.setPrefWidth(300);
 
+        TextField ageField = new TextField();
+        ageField.setPromptText("Please enter your age");
+        ageField.setLayoutX(300);
+        ageField.setLayoutY(450);
+        ageField.setPrefWidth(300);
+
 
         Button registerButton = new Button("Register");
         registerButton.setFont(new Font("Vedana",20));
         registerButton.setLayoutX(400);
         registerButton.setLayoutY(500);
-        registerButton.setOnAction(evt -> controller.registerButtonAction());
+        registerButton.setOnAction(evt -> {
+            String id = idField.getText();
+            String password = passwordField.getText();
+            String name = nameField.getText();
+            String phone = phoneField.getText();
+            String age = ageField.getText();
+
+            try {
+                controller.registerButtonAction(id,password,name,phone,age);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        });
 
         Button backButton = new Button("Back to log in");
         backButton.setFont(new Font("Vedana",20));
@@ -92,7 +113,7 @@ public class RegisterView {
 
         ObservableList listPane = anchorPane.getChildren();
 
-        listPane.addAll(title,idLabel,passwordLabel,nameLabel,phoneLabel,idField,passwordField,nameField,phoneField,registerButton,backButton,datePicker,dobLabel);
+        listPane.addAll(title,idLabel,passwordLabel,nameLabel,phoneLabel,idField,passwordField,nameField,phoneField,registerButton,backButton,ageField,ageLabel);
         Scene scene = new Scene(anchorPane, 1000, 1000);
         return scene;
     }

@@ -13,6 +13,8 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+
 public class LogInView {
 
    public LogInController controller =  new LogInController();
@@ -53,12 +55,19 @@ public class LogInView {
         logInButton.setLayoutX(400);
         logInButton.setLayoutY(350);
         logInButton.setLayoutY(350);
+        logInButton.setOnAction(evt -> {
+            String id = idField.getText();
+            String password = passwordField.getText();
+            try {
+                controller.loginButtonAction(id,password);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
 
-        logInButton.setOnAction(evt -> controller.loginButtonAction());
-
-        Text text1 = new Text("Not Registered? Register");
+        Text text1 = new Text("Not Registered?");
         text1.setFont(new Font("Verdana", 20));
-        Hyperlink registerLink = new Hyperlink("Now");
+        Hyperlink registerLink = new Hyperlink("Register Now");
         registerLink.setFont(new Font("Verdana", 20));
         registerLink.setOnAction(evt -> controller.registerLinkAction());
         TextFlow registerText = new TextFlow();
@@ -67,9 +76,48 @@ public class LogInView {
         registerText.setLayoutX(300);
         registerText.setLayoutY(400);
 
+        Text text2 = new Text("Or log in as ");
+        text2.setFont(new Font("Verdana", 20));
+
+        Hyperlink vc1Link = new Hyperlink("VC1,");
+        vc1Link.setFont(new Font("Verdana", 20));
+        vc1Link.setOnAction(evt -> {
+            try {
+                controller.vc1LinkAction();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+        Hyperlink vc2Link = new Hyperlink("VC2,");
+        vc2Link.setFont(new Font("Verdana", 20));
+        vc2Link.setOnAction(evt -> {
+            try {
+                controller.vc2LinkAction();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+        Hyperlink mohLink = new Hyperlink("or MOH");
+        mohLink.setFont(new Font("Verdana", 20));
+        mohLink.setOnAction(evt -> controller.mohLinkAction());
+
+        TextFlow alternateLogInText = new TextFlow();
+        ObservableList listTextFlow2 = alternateLogInText.getChildren();
+        listTextFlow2.addAll(text2, vc1Link,vc2Link,mohLink);
+        alternateLogInText.setLayoutX(300);
+        alternateLogInText.setLayoutY(450);
+
+        Button vcHallButton = new Button("VC Hall Simulation");
+        vcHallButton.setFont(new Font("Verdana",20));
+        vcHallButton.setPrefWidth(500);
+        vcHallButton.setLayoutX(150);
+        vcHallButton.setLayoutY(550);
+
         ObservableList listPane = root.getChildren();
 
-        listPane.addAll(title,idLabel,passwordLabel,idField,passwordField,logInButton,registerText);
+        listPane.addAll(title,idLabel,passwordLabel,idField,passwordField,logInButton,registerText,alternateLogInText,vcHallButton);
         Scene scene = new Scene(root, 1000, 1000);
         return scene;
     }

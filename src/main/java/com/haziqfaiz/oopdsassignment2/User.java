@@ -1,6 +1,7 @@
 package com.haziqfaiz.oopdsassignment2;
 
 
+
 import java.util.List;
 import java.util.ArrayList;
 import java.nio.file.Files;
@@ -24,7 +25,7 @@ public abstract class User {
 
         for (int i = 0; i < lines.size(); i++) {
             String[] items = lines.get(i).split(",");
-            recipients.add (new Recipient(items[0], items[1], items[2], items[3], items[4], items[5], items[6]));
+            recipients.add (new Recipient(items[0], items[1], items[2], items[3], items[4], items[5], items[6], items[7], items[8],items[9],items[10]));
         }
 
         return recipients;
@@ -62,6 +63,20 @@ public abstract class User {
         return vaccCentres;
     }
 
+    public static VaccCentre getVaccCentreByIndex(int index) throws IOException{
+        ArrayList<VaccCentre> vaccCentres = new ArrayList<>();
+        List<String> lines = Files.readAllLines(Paths.get("/home/haziq/Documents/oopds-assignment-2/csv/VaccCentreData.csv"));
+
+
+        for (int i = 0; i < lines.size(); i++) {
+            String[] items = lines.get(i).split(",");
+
+            vaccCentres.add (new VaccCentre (items[0], items[1], Integer.parseInt(items[2]), Integer.parseInt(items[3]), Integer.parseInt(items[4])));
+        }
+
+        return vaccCentres.get(index);
+    }
+
     /**
      * Save vaccCentres ArrayList into vaccCentreData.csv.
      *
@@ -82,11 +97,27 @@ public abstract class User {
      * @param vaccCentres
      * @throws IOException
      */
-    public static void saveVaccCentreToCSVStatistics (ArrayList<VaccCentre> vaccCentres) throws IOException {
+    public static void saveVaccCentreToCSVStatisticsFirstDose (ArrayList<VaccCentre> vaccCentres) throws IOException {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < vaccCentres.size(); i++) {
-            sb.append (vaccCentres.get(i).toCSVStringStatistics() + "\n");
+            sb.append (vaccCentres.get(i).toCSVStringStatisticsFirstDose() + "\n");
         }
-        Files.write(Paths.get("/home/haziq/Documents/oopds-assignment-2/csv/vaccCentreStatistics.csv"), sb.toString().getBytes());
+        Files.write(Paths.get("VaccCentreStatisticsFirstDose.csv"), sb.toString().getBytes());
+
     }
+
+    /**
+     * Save vaccinations statistics into vaccCentreStatistics.csv.
+     *
+     * @param vaccCentres
+     * @throws IOException
+     */
+    public static void saveVaccCentreToCSVStatisticsSecondDose (ArrayList<VaccCentre> vaccCentres) throws IOException {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < vaccCentres.size(); i++) {
+            sb.append (vaccCentres.get(i).toCSVStringStatisticsSecondDose() + "\n");
+        }
+        Files.write(Paths.get("VaccCentreStatisticsSecondDose.csv"), sb.toString().getBytes());
+    }
+
 }

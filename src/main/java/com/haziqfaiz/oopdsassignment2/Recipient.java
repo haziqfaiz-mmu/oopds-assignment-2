@@ -2,8 +2,8 @@ package com.haziqfaiz.oopdsassignment2;
 
 
 import java.util.ArrayList;
-import java.io.IOException;
 import java.util.Date;
+import java.io.IOException;
 
 /**
  * Recipient representing a user who will undergo vaccination.
@@ -16,7 +16,11 @@ public class Recipient extends User {
     private String status;
     private String vcId;
     private String appointmentDate;
-    private String birthDate;
+    private String FirstDoseDone;
+    private String SecondDoseDone;
+    private String age;
+    private String batchNumber;
+
 
     /**
      * Constructs new recipient data with null values.
@@ -31,9 +35,10 @@ public class Recipient extends User {
      * @param name
      * @param phone
      * @param vcId
-     * @param apptDate
+     * @param appointmentDate
      */
-    public Recipient (String id, String password, String name, String phone, String status, String vcId, String appointmentDate) {
+    public Recipient (String id, String password, String name, String phone, String status, String vcId, String appointmentDate,
+                      String FirstDoseDone, String SecondDoseDone,String age, String batchNumber) {
         this.id = id;
         this.password = password;
         this.name = name;
@@ -41,6 +46,24 @@ public class Recipient extends User {
         this.status = status;
         this.vcId = vcId;
         this.appointmentDate = appointmentDate;
+        this.FirstDoseDone = FirstDoseDone;
+        this.SecondDoseDone = SecondDoseDone;
+        this.age = age;
+        this.batchNumber = batchNumber;
+    }
+
+    Recipient (String id, String password, String name, String phone, String age){
+        this.id = id;
+        this.password = password;
+        this.name = name;
+        this.phone = phone;
+        this.age = age;
+        this.status = "PENDING";
+        this.vcId = "NULL";
+        this.appointmentDate = "NULL";
+        this.FirstDoseDone = "NULL";
+        this.SecondDoseDone = "NULL";
+        this.batchNumber = "NULL";
     }
 
     /**
@@ -99,6 +122,18 @@ public class Recipient extends User {
         return appointmentDate;
     }
 
+    public String getFirstDoseDone() {
+        return FirstDoseDone;
+    }
+
+    public String getSecondDoseDone() {
+        return SecondDoseDone;
+    }
+
+    public String getAge(){return age;}
+
+    public String getBatchNumber(){return batchNumber;}
+
     /**
      * Returns current recipient's details in table format (for menu output).
      * @return id, password, name, phone, and status; in table format.
@@ -115,7 +150,8 @@ public class Recipient extends User {
      * @return ID, password, name, phone, status, and VC ID; separated by commas.
      */
     public String toCSVString() {
-        return id + "," + password + "," + name + "," + phone + "," +  status + "," + vcId + "," + appointmentDate;
+        return id + "," + password + "," + name + "," + phone + "," +  status + "," + vcId + "," +
+                appointmentDate + "," + FirstDoseDone + "," + SecondDoseDone+ "," + age+ "," + batchNumber;
     }
 
     /**
@@ -136,6 +172,14 @@ public class Recipient extends User {
         appointmentDate = appointment;
     }
 
+    public void recordFirstDoseDate (String record){
+        FirstDoseDone = record;
+    }
+
+    public void recordSecondDoseDate (String record){
+        SecondDoseDone = record;
+    }
+
     /**
      * Set current recipient's vaccination status.
      *
@@ -154,13 +198,13 @@ public class Recipient extends User {
      * @return true if matching id & password found;
      *         false otherwise.
      */
-    protected static boolean login (String id, String password) throws IOException {
+    protected static Recipient login (String id, String password) throws IOException {
         ArrayList<Recipient> recipients = DataLoader(); // Load data from RecipientData.csv
 
         for (int i = 0; i < recipients.size(); i++)
             if (recipients.get(i).id.equals(id) && recipients.get(i).password.equals(password))
-                return true;
-        return false;
+                return recipients.get(i);
+        return null;
     }
 
     /**
@@ -172,10 +216,11 @@ public class Recipient extends User {
      * @param name
      * @param phone
      */
-    protected static void register (String id, String password, String name, String phone) throws IOException {
+    protected static void register (String id, String password, String name, String phone, String age) throws IOException {
         ArrayList<Recipient> recipients = DataLoader(); // Load data from RecipientData.csv
 
-        recipients.add(new Recipient (id, password, name.toUpperCase(), phone.replaceAll("\\D", ""), "PENDING", "NULL", "NULL"));
+        recipients.add(new Recipient (id, password, name.toUpperCase(), phone.replaceAll("\\D", ""), "PENDING", "NULL", "NULL", "NULL",
+                "NULL",age,"NULL"));
 
         saveRecipientToCSV(recipients);
     }

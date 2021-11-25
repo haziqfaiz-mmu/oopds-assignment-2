@@ -9,6 +9,12 @@ import javafx.scene.text.Text;
 
 public class VaccCentreView {
     private VaccCentreController controller = new VaccCentreController();
+
+    private VaccCentre activeVC = new VaccCentre();
+
+    public void setActiveVC(VaccCentre vc){
+        this.activeVC=vc;
+    }
     public Scene vcMainScene(){
         AnchorPane anchorPane = new AnchorPane();
 
@@ -31,27 +37,27 @@ public class VaccCentreView {
         setAppointmentButton.setLayoutY(300);
         setAppointmentButton.setPrefWidth(700);
 
-        Button viewStatisticsButton = new Button("View Statistics");
-        viewStatisticsButton.setFont(new Font("Verdana",20));
-        viewStatisticsButton.setLayoutX(150);
-        viewStatisticsButton.setLayoutY(350);
-        viewStatisticsButton.setPrefWidth(700);
+        Button updateAppointmentButton = new Button("Update Appointment Date");
+        updateAppointmentButton.setFont(new Font("Verdana",20));
+        updateAppointmentButton.setLayoutX(150);
+        updateAppointmentButton.setLayoutY(350);
+        updateAppointmentButton.setPrefWidth(700);
 
-        Button simulationButton = new Button("VC Hall Simulation");
-        simulationButton.setFont(new Font("Verdana",20));
-        simulationButton.setLayoutX(150);
-        simulationButton.setLayoutY(400);
-        simulationButton.setPrefWidth(700);
+        Button statisticsButton = new Button("View Statistics");
+        statisticsButton.setFont(new Font("Verdana",20));
+        statisticsButton.setLayoutX(150);
+        statisticsButton.setLayoutY(400);
+        statisticsButton.setPrefWidth(700);
 
         Button logOutButton = new Button("Log Out");
         logOutButton.setFont(new Font("Vedana",20));
-        logOutButton.setLayoutX(370);
+        logOutButton.setLayoutX(450);
         logOutButton.setLayoutY(500);
         logOutButton.setOnAction(evt -> controller.logOutButtonAction());
 
         ObservableList listPane = anchorPane.getChildren();
 
-        listPane.addAll(title,viewAllRecipientButton,setAppointmentButton,viewStatisticsButton,simulationButton,logOutButton);
+        listPane.addAll(title,viewAllRecipientButton,setAppointmentButton,updateAppointmentButton,statisticsButton,logOutButton);
         Scene scene = new Scene(anchorPane, 1000, 1000);
         return scene;
     }

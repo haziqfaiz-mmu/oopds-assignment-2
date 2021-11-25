@@ -32,21 +32,33 @@ public class MohView {
         distributeVaccineButton.setLayoutY(300);
         distributeVaccineButton.setPrefWidth(700);
 
+        Button distributeRecipientButton = new Button("Distribute Recipient");
+        distributeRecipientButton.setFont(new Font("Verdana",20));
+        distributeRecipientButton.setLayoutX(150);
+        distributeRecipientButton.setLayoutY(350);
+        distributeRecipientButton.setPrefWidth(700);
+
         Button viewStatisticsButton = new Button("View Statistics");
         viewStatisticsButton.setFont(new Font("Verdana",20));
         viewStatisticsButton.setLayoutX(150);
-        viewStatisticsButton.setLayoutY(350);
+        viewStatisticsButton.setLayoutY(400);
         viewStatisticsButton.setPrefWidth(700);
+
+        Button createVCButton = new Button("Add Vaccination Center");
+        createVCButton.setFont(new Font("Verdana",20));
+        createVCButton.setLayoutX(150);
+        createVCButton.setLayoutY(450);
+        createVCButton.setPrefWidth(700);
 
         Button logOutButton = new Button("Log Out");
         logOutButton.setFont(new Font("Vedana",20));
-        logOutButton.setLayoutX(370);
+        logOutButton.setLayoutX(450);
         logOutButton.setLayoutY(500);
         logOutButton.setOnAction(evt -> controller.logOutButtonAction());
 
         ObservableList listPane = anchorPane.getChildren();
 
-        listPane.addAll(title,viewAllRecipientButton,distributeVaccineButton,viewStatisticsButton,logOutButton);
+        listPane.addAll(title,viewAllRecipientButton,distributeVaccineButton,viewStatisticsButton,logOutButton,createVCButton,distributeRecipientButton);
         Scene scene = new Scene(anchorPane, 1000, 1000);
         return scene;
     }
